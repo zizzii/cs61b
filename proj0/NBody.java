@@ -22,19 +22,13 @@ public class NBody {
         return array;
     }
 
-    public static int readSize(String s){
-        In in = new In(s);
-        int numberPlanets = in.readInt();
-        return numberPlanets;
-    }
-
     public static void main(String[] args){
         double T = Double.parseDouble(args[0]);
         double dt = Double.parseDouble(args[1]);
         String filename = args[2];
-        int size = readSize(filename);
         double r = readRadius(filename);
         Planet[] planets = readPlanets(filename);
+        int size = planets.length;
 
         StdDraw.setXscale(-r,r);
         StdDraw.setYscale(-r,r);
