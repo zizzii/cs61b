@@ -90,6 +90,9 @@ public class IntList {
      */
 
     public static IntList dcatenate(IntList A, IntList B) {
+        if(A == null){
+            return B;
+        }
         IntList pointerA = A.rest;
         while(pointerA != null){
             if(pointerA.rest == null){
@@ -108,6 +111,9 @@ public class IntList {
      */
     public static IntList catenate(IntList A, IntList B) {
         //TODO:  fill in method
+        if(A == null){
+            return B;
+        }
         IntList list = new IntList(A.first,null);
         IntList tail = list;
         A = A.rest;
