@@ -18,6 +18,15 @@ public class IntList {
     public IntList rest;
 
     /**
+     * Returns the ith item in the list
+     */
+    public int get(int i){
+        if(i == 0){
+            return first;
+        }
+        return rest.get(i-1);
+    }
+    /**
      * A List with first FIRST0 and rest REST0.
      */
     public IntList(int first0, IntList rest0) {
@@ -81,8 +90,16 @@ public class IntList {
      */
 
     public static IntList dcatenate(IntList A, IntList B) {
-        //TODO:  fill in method
-        return null;
+        IntList pointerA = A.rest;
+        while(pointerA != null){
+            if(pointerA.rest == null){
+                pointerA.rest = B;
+                break;
+            }
+            pointerA = pointerA.rest;
+        }
+
+        return A;
     }
 
     /**
@@ -91,7 +108,20 @@ public class IntList {
      */
     public static IntList catenate(IntList A, IntList B) {
         //TODO:  fill in method
-        return null;
+        IntList list = new IntList(A.first,null);
+        IntList tail = list;
+        A = A.rest;
+        while(A != null){
+            tail.rest = new IntList(A.first,null);
+            tail = tail.rest;
+            A = A.rest;
+        }
+        while(B != null){
+            tail.rest = new IntList(B.first,null);
+            tail = tail.rest;
+            B = B.rest;
+        }
+        return list;
     }
 
 
