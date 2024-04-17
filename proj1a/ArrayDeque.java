@@ -22,10 +22,10 @@ public class ArrayDeque<T> {
             int frontLength = items.length - front;
             System.arraycopy(items, front, a, 0, frontLength);
             System.arraycopy(items, 0, a, frontLength, back + 1);
-        }
-        else {
+        } else {
             System.arraycopy(items, front, a, 0, size);
         }
+
         front = 0;
         back = size - 1;
         items = a;
@@ -34,34 +34,31 @@ public class ArrayDeque<T> {
     /** Adds an item of type T to the front of the deque. */
     public void addFirst(T item) {
         if (size == items.length) {
-            resize(size*2);
+            resize(size * 2);
         }
         if (front == 0 && items[front] == null) {
             items[front] = item;
-            size +=1;
-        }
-        else if (front == 0) {
+            size += 1;
+        } else if (front == 0) {
             front = items.length - 1;
             items[front] = item;
-            size +=1;
-        }
-        else {
+            size += 1;
+        } else {
             front -= 1;
             items[front] = item;
-            size +=1;
+            size += 1;
         }
     }
 
     /** Adds an item of type T to the back of the deque.*/
     public void addLast(T item) {
         if (size == items.length) {
-            resize(size*2);
+            resize(size * 2);
         }
         if (back == 0 && items[back] == null) {
             items[back] = item;
             size += 1;
-        }
-        else {
+        } else {
             back += 1;
             items[back] = item;
             size += 1;
@@ -74,7 +71,7 @@ public class ArrayDeque<T> {
     }
 
     public void printDequeHelper(int curr) {
-        if(curr == back + 1){
+        if (curr == back + 1) {
             return;
         }
         if (curr == items.length - 1) {
@@ -94,18 +91,14 @@ public class ArrayDeque<T> {
     public T get(int index) {
         if (size == 0) {
             return null;
-        }
-        else if (index > size) {
+        } else if (index > size) {
             return null;
-        }
-        else if (back > front) {
+        } else if (back > front) {
             return items[index];
-        }
-        else {
+        } else {
             if (index + front < items.length) {
                 return items[front + index];
-            }
-            else {
+            } else {
                 return items[index - back];
             }
         }
@@ -127,17 +120,15 @@ public class ArrayDeque<T> {
         if (front > back) {
             if (front == items.length - 1) {
                 front = 0;
-            }
-            else {
+            } else {
                 front += 1;
             }
-        }
-        else {
+        } else {
             front += 1;
         }
         size -= 1;
-        if (CheckUsage()) {
-            resize(items.length/2);
+        if (checkUsage()) {
+            resize(items.length / 2);
         }
         return a;
     }
@@ -152,24 +143,23 @@ public class ArrayDeque<T> {
         if (front > back) {
             if (back == 0) {
                 back = items.length - 1;
-            }
-            else {
+            } else {
                 back -= 1;
             }
-        }
-        else {
+        } else {
             back -= 1;
         }
         size -= 1;
-        if (CheckUsage()) {
-            resize(items.length/2);
+        if (checkUsage()) {
+            resize(items.length / 2);
         }
         return a;
     }
 
     /** Check if the usage factor is more than 50%, if not halve the array. */
-    public boolean CheckUsage() {
-        return size < items.length / 4 && size > 16;
+    public boolean checkUsage() {
+        final int minim = 16;
+        return size < items.length / 4 && size > minim;
     }
 
 }
