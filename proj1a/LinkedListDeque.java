@@ -88,7 +88,7 @@ public class LinkedListDeque<T> {
             return null;
         }
         Node<T> ptr = sentFront.next;
-        while (index > 0){
+        while (index > 0) {
             ptr = ptr.next;
             index -= 1;
         }
