@@ -14,10 +14,10 @@ public class ArrayDequeTest {
         Integer C = a.get(6);
         int D = a.get(0);
         int A = a.get(1);
-        assertEquals(A,2);
-        assertEquals(B,4);
+        assertEquals(A, 2);
+        assertEquals(B, 4);
         assertNull(C);
-        assertEquals(D,1);
+        assertEquals(D, 1);
         a.printDeque();
     }
 
@@ -43,12 +43,12 @@ public class ArrayDequeTest {
     @Test
     public void checkUsageTest() {
         ArrayDeque<Integer> T = new ArrayDeque<>();
-        for(int i =100; i>=0; i--) {
+        for (int i = 100; i >= 0; i--) {
             T.addFirst(i);
         }
-        for(int i=100; i>=16;i--) {
+        for (int i = 100; i >= 16; i--) {
             T.removeFirst();
         }
-        assertTrue(T.size() >=16);
+        assertTrue(T.size() >= 16);
     }
 }

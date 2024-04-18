@@ -58,6 +58,7 @@ public class LinkedListDeque<T> {
         }
         T F = sentFront.next.item;
         sentFront.next = sentFront.next.next;
+        size -= 1;
         return F;
     }
 
@@ -69,6 +70,7 @@ public class LinkedListDeque<T> {
         }
         T L = sentBack.prev.item;
         sentBack.prev = sentBack.prev.prev;
+        size -= 1;
         return L;
     }
 
