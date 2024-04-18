@@ -1,5 +1,5 @@
 public class LinkedListDeque<T> {
-    private class Node<T> {
+    private static class Node<T> {
         private T item;
         private Node<T> next;
         private Node<T> prev;
@@ -19,24 +19,26 @@ public class LinkedListDeque<T> {
     public LinkedListDeque() {
         sentFront = new Node<>(null,  null, null);
         sentBack = new Node<>(null, null, null);
-        sentFront.next = sentBack;
-        sentBack.prev = sentFront;
+        sentFront.prev = sentBack;
+        sentBack.next = sentFront;
         size = 0;
     }
 
     /* Adds an item of type T to the front of the deque. */
     public void addFirst(T stuff) {
-        Node<T> temp = sentFront.next;
-        sentFront.next = new Node<>(stuff, sentFront, sentFront.next);
-        temp.prev = sentFront.next;
+        Node<T> backTemp = sentFront.prev;
+        Node<T> node = new Node<>(stuff, backTemp, sentFront);
+        backTemp.next = node;
+        sentFront.prev = node;
         size += 1;
     }
 
     /* Adds an item of type T to the back of the deque. */
     public void addLast(T stuff) {
-        Node<T> temp = sentBack.prev;
-        sentBack.prev = new Node<>(stuff, sentBack.prev, sentBack);
-        temp.next = sentBack.prev;
+        Node<T> frontTemp = sentBack.next;
+        Node<T> node = new Node<>(stuff, sentBack, frontTemp);
+        frontTemp.prev = node;
+        sentBack.next = node;
         size += 1;
     }
 
@@ -56,8 +58,10 @@ public class LinkedListDeque<T> {
         if (size == 0) {
             return null;
         }
-        T F = sentFront.next.item;
-        sentFront.next = sentFront.next.next;
+        T F = sentFront.prev.item;
+        Node<T> temp = sentFront.prev.prev;
+        temp.next = sentFront;
+        sentFront.prev = sentFront.prev.prev;
         size -= 1;
         return F;
     }
@@ -68,18 +72,20 @@ public class LinkedListDeque<T> {
         if (size == 0) {
             return null;
         }
-        T L = sentBack.prev.item;
-        sentBack.prev = sentBack.prev.prev;
+        T L = sentBack.next.item;
+        Node<T> temp = sentBack.next.next;
+        temp.prev = sentBack;
+        sentBack.next = sentBack.next.next;
         size -= 1;
         return L;
     }
 
     /* Prints the items in the deque from first to last, separated by a space. */
     public void printDeque() {
-        Node<T> ptr = sentFront.next;
+        Node<T> ptr = sentFront.prev;
         while (ptr != sentBack) {
             System.out.print(ptr.item + " ");
-            ptr = ptr.next;
+            ptr = ptr.prev;
         }
     }
 
@@ -91,9 +97,9 @@ public class LinkedListDeque<T> {
         if (index + 1 > size) {
             return null;
         }
-        Node<T> ptr = sentFront.next;
+        Node<T> ptr = sentFront.prev;
         while (index > 0) {
-            ptr = ptr.next;
+            ptr = ptr.prev;
             index -= 1;
         }
         return ptr.item;
@@ -102,13 +108,13 @@ public class LinkedListDeque<T> {
         if (index == 0) {
             return ptr.item;
         }
-        return getRecursiveHelper(index - 1, ptr.next);
+        return getRecursiveHelper(index - 1, ptr.prev);
     }
     public T getRecursive(int index) {
         if (index + 1 > size) {
             return null;
         }
-        return getRecursiveHelper(index, sentFront.next);
+        return getRecursiveHelper(index, sentFront.prev);
     }
 
 }

@@ -38,16 +38,14 @@ public class ArrayDeque<T> {
         }
         if (front == 0 && items[front] == null) {
             items[front] = item;
-            size += 1;
         } else if (front == 0) {
             front = items.length - 1;
             items[front] = item;
-            size += 1;
         } else {
             front -= 1;
             items[front] = item;
-            size += 1;
         }
+        size += 1;
     }
 
     /** Adds an item of type T to the back of the deque.*/
@@ -57,12 +55,11 @@ public class ArrayDeque<T> {
         }
         if (back == 0 && items[back] == null) {
             items[back] = item;
-            size += 1;
         } else {
             back += 1;
             items[back] = item;
-            size += 1;
         }
+        size += 1;
     }
 
     /** Prints the items in the deque from first to last, separated by a space. */
@@ -126,8 +123,12 @@ public class ArrayDeque<T> {
             }
         } else {
             front += 1;
+
         }
         size -= 1;
+        if (size == 0) {
+            front = 0;
+        }
         if (checkUsage()) {
             resize(items.length / 2);
         }
@@ -152,6 +153,9 @@ public class ArrayDeque<T> {
             back -= 1;
         }
         size -= 1;
+        if (size == 0) {
+            back = 0;
+        }
         if (checkUsage()) {
             resize(items.length / 2);
         }
