@@ -16,7 +16,7 @@ public class ArrayDeque<T> {
     }
 
     /** resize the list to 2 times the original capacity */
-    public void resize(int capacity) {
+    private void resize(int capacity) {
         T[] a = (T[]) new Object[capacity];
         if (front > back) {
             int frontLength = items.length - front;
@@ -70,7 +70,7 @@ public class ArrayDeque<T> {
         printDequeHelper(front);
     }
 
-    public void printDequeHelper(int curr) {
+    private void printDequeHelper(int curr) {
         if (curr == back + 1) {
             return;
         }
@@ -110,7 +110,8 @@ public class ArrayDeque<T> {
         return size == 0;
     }
 
-    /** Removes and returns the item at the front of the deque. If no such item exists, returns null. */
+    /** Removes and returns the item at the front of the deque.
+     * If no such item exists, returns null. */
     public T removeFirst() {
         if (isEmpty()) {
             return null;
@@ -133,7 +134,8 @@ public class ArrayDeque<T> {
         return a;
     }
 
-    /** Removes and returns the item at the back of the deque. If no such item exists, returns null. */
+    /** Removes and returns the item at the back of the deque.
+     * If no such item exists, returns null. */
     public T removeLast() {
         if (isEmpty()) {
             return null;
@@ -157,7 +159,7 @@ public class ArrayDeque<T> {
     }
 
     /** Check if the usage factor is more than 50%, if not halve the array. */
-    public boolean checkUsage() {
+    private boolean checkUsage() {
         final int minim = 16;
         return size < items.length / 4 && size > minim;
     }
