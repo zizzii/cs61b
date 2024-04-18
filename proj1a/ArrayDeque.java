@@ -34,12 +34,15 @@ public class ArrayDeque<T> {
     /** Adds an item of type T to the front of the deque. */
     public void addFirst(T item) {
         if (size == items.length) {
-            resize(size * 2);
+            resize(size * 3);
         }
         if (front == 0 && items[front] == null) {
             items[front] = item;
         } else if (front == 0) {
             front = items.length - 1;
+            items[front] = item;
+        } else if (front < back) {
+            front += 1;
             items[front] = item;
         } else {
             front -= 1;
@@ -51,9 +54,12 @@ public class ArrayDeque<T> {
     /** Adds an item of type T to the back of the deque.*/
     public void addLast(T item) {
         if (size == items.length) {
-            resize(size * 2);
+            resize(size * 3);
         }
         if (back == 0 && items[back] == null) {
+            items[back] = item;
+        } else if (front < back) {
+            back += 1;
             items[back] = item;
         } else {
             back += 1;
@@ -86,9 +92,7 @@ public class ArrayDeque<T> {
     and so forth. If no such item exists, returns null. Must not alter the deque!
      */
     public T get(int index) {
-        if (size == 0) {
-            return null;
-        } else if (index > size) {
+        if (index > size) {
             return null;
         } else if (back > front) {
             return items[index];
@@ -128,6 +132,7 @@ public class ArrayDeque<T> {
         size -= 1;
         if (size == 0) {
             front = 0;
+            back = 0;
         }
         if (checkUsage()) {
             resize(items.length / 2);
@@ -155,6 +160,7 @@ public class ArrayDeque<T> {
         size -= 1;
         if (size == 0) {
             back = 0;
+            front = 0;
         }
         if (checkUsage()) {
             resize(items.length / 2);
@@ -165,7 +171,7 @@ public class ArrayDeque<T> {
     /** Check if the usage factor is more than 50%, if not halve the array. */
     private boolean checkUsage() {
         final int minim = 16;
-        return size < items.length / 4 && size > minim;
+        return size < items.length / 3 && size > minim;
     }
 
 }
