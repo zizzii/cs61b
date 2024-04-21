@@ -3,11 +3,13 @@ public class ArrayDeque<T> {
     private int size;
     private int front;
     private int back;
+    private int length;
     public ArrayDeque() {
         items = (T[]) new Object[8];
         size = 0;
-        front = 0;
-        back = 0;
+        front = 4;
+        back = 4;
+        length = 8;
     }
 
     /** Returns the number of items in the list. */
@@ -16,75 +18,81 @@ public class ArrayDeque<T> {
     }
 
     /** resize the list to 2 times the original capacity */
-    private void resize(int capacity) {
-        T[] a = (T[]) new Object[capacity];
-        if (front > back) {
-            int frontLength = items.length - front;
-            System.arraycopy(items, front, a, 0, frontLength);
-            System.arraycopy(items, 0, a, frontLength, back + 1);
-        } else {
-            System.arraycopy(items, front, a, 0, size);
+    private void grow() {
+        T[] newArray = (T[]) new Object[length * 2];
+        int ptr1 = front;
+        int ptr2 = length;
+        while (ptr1 != back) {
+            newArray[ptr2] = items[ptr1];
+            ptr1 = plusOne(ptr1, length);
+            ptr2 = plusOne(ptr2, length * 2);
         }
+        front = length;
+        back = ptr2;
+        length *= 2;
+        items = newArray;
+    }
+    /** shrink the original list to x times the original capacity */
+    private void shrink() {
+        T[] newArray = (T[]) new Object[length / 2];
+        int ptr1 = front;
+        int ptr2 = length / 4;
+        while (ptr1 != back) {
+            newArray[ptr2] = items[ptr1];
+            ptr1 = plusOne(ptr1, length);
+            ptr2 = plusOne(ptr2, length / 2);
+        }
+        front = length / 4;
+        back = ptr2;
+        length /= 2;
+        items = newArray;
+    }
 
-        front = 0;
-        back = size - 1;
-        items = a;
+    private int minusOne(int index) {
+        if (index == 0) {
+            return items.length - 1;
+        } else {
+            return index - 1;
+        }
+    }
+
+    private int plusOne(int index, int module) {
+        index %= module;
+        if (index == module - 1) {
+            return 0;
+        } else {
+            return index + 1;
+        }
     }
 
     /** Adds an item of type T to the front of the deque. */
     public void addFirst(T item) {
-        if (size == items.length) {
-            resize(size * 3);
+        if (size == length - 1) {
+            grow();
         }
-        if (front == 0 && items[front] == null) {
-            items[front] = item;
-        } else if (front == 0) {
-            front = items.length - 1;
-            items[front] = item;
-        } else if (front < back) {
-            front += 1;
-            items[front] = item;
-        } else {
-            front -= 1;
-            items[front] = item;
-        }
+        front = minusOne(front);
+        items[front] = item;
         size += 1;
+
     }
 
     /** Adds an item of type T to the back of the deque.*/
     public void addLast(T item) {
-        if (size == items.length) {
-            resize(size * 3);
+        if (size == length - 1) {
+            grow();
         }
-        if (back == 0 && items[back] == null) {
-            items[back] = item;
-        } else if (front < back) {
-            back += 1;
-            items[back] = item;
-        } else {
-            back += 1;
-            items[back] = item;
-        }
+        items[back] = item;
         size += 1;
+        back = plusOne(back, length);
     }
 
     /** Prints the items in the deque from first to last, separated by a space. */
     public void printDeque() {
-        printDequeHelper(front);
-    }
-
-    private void printDequeHelper(int curr) {
-        if (curr == back + 1) {
-            return;
+        int x = front;
+        while (x != back) {
+            System.out.print(items[x] + " ");
+            x = plusOne(x, length);
         }
-        if (curr == items.length - 1) {
-            System.out.println(items[curr]);
-            printDequeHelper(0);
-        } else {
-            System.out.println(items[curr]);
-            printDequeHelper(curr + 1);
-        }
-
     }
 
     /**
@@ -92,18 +100,14 @@ public class ArrayDeque<T> {
     and so forth. If no such item exists, returns null. Must not alter the deque!
      */
     public T get(int index) {
-        if (index > size) {
+        if (index >= size) {
             return null;
-        } else if (back > front) {
-            return items[index];
-        } else {
-            if (index + front < items.length) {
-                return items[front + index];
-            } else {
-                return items[index - back];
-            }
         }
-
+        int ptr = front;
+        for (int i = 0; i < index; i++) {
+            ptr = plusOne(ptr, length);
+        }
+        return items[ptr];
     }
 
     /** Returns true if deque is empty, false otherwise. */
@@ -114,64 +118,30 @@ public class ArrayDeque<T> {
     /** Removes and returns the item at the front of the deque.
      * If no such item exists, returns null. */
     public T removeFirst() {
-        if (isEmpty()) {
+        if (length >= 16 && length / size >= 4) {
+            shrink();
+        }
+        if (size == 0) {
             return null;
         }
-        T a = items[front];
-        items[front] = null;
-        if (front > back) {
-            if (front == items.length - 1) {
-                front = 0;
-            } else {
-                front += 1;
-            }
-        } else {
-            front += 1;
-
-        }
+        T temp = items[front];
+        front = plusOne(front, length);
         size -= 1;
-        if (size == 0) {
-            front = 0;
-            back = 0;
-        }
-        if (checkUsage()) {
-            resize(items.length / 2);
-        }
-        return a;
+        return temp;
     }
 
     /** Removes and returns the item at the back of the deque.
      * If no such item exists, returns null. */
     public T removeLast() {
-        if (isEmpty()) {
+        if (length >= 16 && length / size >= 4) {
+            shrink();
+        }
+        if (size == 0) {
             return null;
         }
-        T a = items[back];
-        items[back] = null;
-        if (front > back) {
-            if (back == 0) {
-                back = items.length - 1;
-            } else {
-                back -= 1;
-            }
-        } else {
-            back -= 1;
-        }
+        back = minusOne(back);
         size -= 1;
-        if (size == 0) {
-            back = 0;
-            front = 0;
-        }
-        if (checkUsage()) {
-            resize(items.length / 2);
-        }
-        return a;
-    }
-
-    /** Check if the usage factor is more than 50%, if not halve the array. */
-    private boolean checkUsage() {
-        final int minim = 16;
-        return size < items.length / 3 && size > minim;
+        return items[back];
     }
 
 }
