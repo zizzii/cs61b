@@ -11,60 +11,39 @@ public class Palindrome {
         return d;
     }
 
-    /** Helper function to transform Deque to String */
-    private String dequeToWord(Deque<Character> d) {
-        String s = null;
-        int size = d.size();
-        for (int i = 0; i < size; i++) {
-            s += d.removeFirst();
-        }
-        return s;
-    }
-
     /** Given a string, isPalindrome
      * return true if it's a palindrome
      * return false if not
      */
     public boolean isPalindrome(String word) {
-        Deque<Character> d = wordToDeque(word);
-        return isPalindromeHelper(d);
-    }
-
-    /** Helper function to find palindrome */
-    private boolean isPalindromeHelper(Deque<Character> d) {
-        if (d.size() <= 1) {
+        if (word == null || word.length() <= 1) {
             return true;
-        } else {
-            char first = d.removeFirst();
-            char last = d.removeLast();
-            if (first == last) {
-                return isPalindromeHelper(d);
-            } else {
+        }
+        int len = word.length();
+        for (int i = 0; i < len / 2; i++) {
+            if (word.charAt(i) != word.charAt(len - i - 1)) {
                 return false;
             }
         }
+        return true;
     }
+
 
     /** Given a string,
      * will return true if the word is a palindrome according to the character comparison test
      * provided by the CharacterComparator passed in as argument cc
      * */
     public boolean isPalindrome(String word, CharacterComparator cc) {
-        Deque<Character> d = wordToDeque(word);
-        return isPalindromeHelper(d, cc);
-    }
-    /** Helper function */
-    private boolean isPalindromeHelper(Deque<Character> d, CharacterComparator cc) {
-        if (d.size() <= 1) {
+        if (word == null || word.length() <= 1) {
             return true;
-        } else {
-            char first = d.removeFirst();
-            char last = d.removeLast();
-            if (cc.equalChars(first, last)) {
-                return isPalindromeHelper(d, cc);
-            } else {
+        }
+        int len = word.length();
+        for (int i = 0; i < len / 2; i++) {
+            if (!cc.equalChars(word.charAt(i), word.charAt(len - i - 1))) {
                 return false;
             }
         }
+        return true;
     }
+
 }
