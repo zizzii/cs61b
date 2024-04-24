@@ -51,4 +51,43 @@ public class ArrayDequeTest {
         }
         assertTrue(T.size() >= 16);
     }
+
+    @Test
+    public void randomAddRemoveTest() {
+        ArrayDeque<Integer> T = new ArrayDeque<>();
+        T.addLast(0);
+        assertEquals(0, (int) T.removeFirst());
+        T.addLast(2);
+        T.addLast(3);
+        assertFalse(T.isEmpty());
+        T.addLast(5);
+        T.addLast(6);
+        assertEquals(2, (int) T.removeFirst());
+    }
+
+    @Test
+    public void randomGetTest() {
+        ArrayDeque<Integer> T = new ArrayDeque<>();
+        T.addLast(4);
+        T.addLast(4);
+        T.addLast(4);
+        T.addLast(4);
+        T.removeFirst();
+        T.removeFirst();
+        T.removeFirst();
+    }
+
+    @Test
+    public void printTest() {
+        ArrayDeque<Integer> T = new ArrayDeque<>();
+        T.addFirst(3);
+        T.addFirst(2);
+        T.addLast(4);
+        T.addFirst(1);
+        T.addLast(5);
+        T.addFirst(0);
+        T.addLast(6);
+
+        T.printDeque();
+    }
 }
