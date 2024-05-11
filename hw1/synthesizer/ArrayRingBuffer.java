@@ -1,12 +1,10 @@
-// TODO: Make sure to make this class a part of the synthesizer package
+
  package synthesizer;
 import synthesizer.AbstractBoundedQueue;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-//TODO: Make sure to make this class and all of its methods public
-//TODO: Make sure to make this class extend AbstractBoundedQueue<t>
 public class ArrayRingBuffer<T>  extends AbstractBoundedQueue<T> {
     /* Index for the next dequeue or peek. */
     private int first;            // index for the next dequeue or peek
@@ -19,11 +17,6 @@ public class ArrayRingBuffer<T>  extends AbstractBoundedQueue<T> {
      * Create a new ArrayRingBuffer with the given capacity.
      */
     public ArrayRingBuffer(int capacity) {
-        // TODO: Create new array with capacity elements.
-        //       first, last, and fillCount should all be set to 0.
-        //       this.capacity should be set appropriately. Note that the local variable
-        //       here shadows the field we inherit from AbstractBoundedQueue, so
-        //       you'll need to use this.capacity to set the capacity.
         first = last = fillCount = 0;
         this.capacity = capacity;
         rb = (T[]) new Object[capacity];
